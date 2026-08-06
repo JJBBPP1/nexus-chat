@@ -1,0 +1,19 @@
+# Binarios Go
+/bin/
+/dist/
+
+# Variables de entorno
+.env
+
+# Configuración de VS Code
+.vscode/
+
+# Logs
+*.log
+
+# Archivos temporales
+*.tmp
+
+# Sistema
+.DS_Store
+Thumbs.db
