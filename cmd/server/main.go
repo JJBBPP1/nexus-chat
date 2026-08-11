@@ -10,6 +10,7 @@ import (
 func main() {
 
 	http.HandleFunc("/api/health", handlers.HealthHandler)
+	http.HandleFunc("/api/register", handlers.RegisterHandler)
 
 	fmt.Println("Servidor iniciado en http://localhost:8080")
 
