@@ -22,3 +22,22 @@ func TestHashPassword(t *testing.T) {
 		t.Fatal("una contraseña incorrecta fue aceptada")
 	}
 }
+
+func TestCheckPassword(t *testing.T) {
+	password := "12345678"
+
+	hash, err := HashPassword(password)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	err = CheckPassword(password, hash)
+	if err != nil {
+		t.Fatal("La contraseña correcta no ha sido validada")
+	}
+
+	err = CheckPassword("contraseña_incorrecta", hash)
+	if err == nil {
+		t.Fatal("Una contraseña incorrecta ha sido aceptada")
+	}
+}

@@ -41,3 +41,26 @@ func (r *UserRepository) CreateUser(
 
 	return nil
 }
+
+func (r *UserRepository) GetUserByEmail(email string) (string, string, error) {
+	query := `
+		SELECT username, password_hash
+		FROM users
+		WHERE email = $1
+	`
+
+	var username string
+	var passwordHash string
+
+	err := r.conn.QueryRow(
+		context.Background(),
+		query,
+		email,
+	).Scan(&username, &passwordHash)
+
+	if err != nil {
+		return "", "", fmt.Errorf("error buscando usuario: %w", err)
+	}
+
+	return username, passwordHash, nil
+}

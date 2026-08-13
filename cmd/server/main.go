@@ -24,6 +24,9 @@ func main() {
 	registerHandler := handlers.NewRegisterHandler(userRepository)
 	http.HandleFunc("/api/register", registerHandler)
 
+	loginHandler := handlers.NewLoginHandler(userRepository)
+	http.HandleFunc("/api/login", loginHandler)
+
 	fmt.Println("Servidor iniciado en http://localhost:8080")
 
 	err = http.ListenAndServe(":8080", nil)

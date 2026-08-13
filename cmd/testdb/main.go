@@ -1,41 +1,26 @@
 package main
 
 import (
-	"context"
 	"fmt"
-	"log"
 
-	"nexus-chat/internal/auth"
 	"nexus-chat/internal/database"
 )
 
 func main() {
 	conn, err := database.Connect()
 	if err != nil {
-		log.Fatal(err)
+		fmt.Println("Error conectando a PostgreSQL:", err)
+		return
 	}
-	defer conn.Close(context.Background())
 
-	repository := database.NewUserRepository(conn)
+	userRepository := database.NewUserRepository(conn)
 
-	password := "12345678"
-
-	passwordHash, err := auth.HashPassword(password)
+	username, passwordHash, err := userRepository.GetUserByEmail("pepe@gmail.com")
 	if err != nil {
-		log.Fatal(err)
+		fmt.Println("Error buscando usuario:", err)
+		return
 	}
 
-	err = repository.CreateUser(
-		"test_user",
-		"test@nexus.local",
-		passwordHash,
-	)
-
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	fmt.Println("Usuario creado correctamente")
-	fmt.Println("Hash almacenado:")
-	fmt.Println(passwordHash)
+	fmt.Println("Usuario encontrado:", username)
+	fmt.Println("Hash almacenado:", passwordHash)
 }
