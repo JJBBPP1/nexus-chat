@@ -45,7 +45,7 @@ func (h *LoginHandler) Handle(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	username, passwordHash, err := h.userRepository.GetUserByEmail(req.Email)
+	userID, username, passwordHash, err := h.userRepository.GetUserByEmail(req.Email)
 	if err != nil {
 		http.Error(w, "Credenciales incorrectas", http.StatusUnauthorized)
 		return
@@ -56,9 +56,16 @@ func (h *LoginHandler) Handle(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	token, err := auth.GenerateToken(userID, username)
+	if err != nil {
+		http.Error(w, "Error generando el token", http.StatusInternalServerError)
+		return
+	}
+
 	response := map[string]interface{}{
 		"success": true,
 		"message": "Inicio de sesión correcto",
+		"token":   token,
 		"user": map[string]string{
 			"username": username,
 			"email":    req.Email,

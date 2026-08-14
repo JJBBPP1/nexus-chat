@@ -15,12 +15,13 @@ func main() {
 
 	userRepository := database.NewUserRepository(conn)
 
-	username, passwordHash, err := userRepository.GetUserByEmail("pepe@gmail.com")
+	userID, username, passwordHash, err := userRepository.GetUserByEmail("pepe@gmail.com")
 	if err != nil {
 		fmt.Println("Error buscando usuario:", err)
 		return
 	}
 
 	fmt.Println("Usuario encontrado:", username)
+	fmt.Println("ID del usuario:", userID)
 	fmt.Println("Hash almacenado:", passwordHash)
 }

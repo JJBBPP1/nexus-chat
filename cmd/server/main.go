@@ -7,6 +7,7 @@ import (
 
 	"nexus-chat/internal/database"
 	"nexus-chat/internal/handlers"
+	"nexus-chat/internal/middleware"
 )
 
 func main() {
@@ -26,6 +27,11 @@ func main() {
 
 	loginHandler := handlers.NewLoginHandler(userRepository)
 	http.HandleFunc("/api/login", loginHandler)
+
+	profileHandler := http.HandlerFunc(handlers.ProfileHandler)
+	protectedProfileHandler := middleware.AuthMiddleware(profileHandler)
+
+	http.Handle("/api/profile", protectedProfileHandler)
 
 	fmt.Println("Servidor iniciado en http://localhost:8080")
 
