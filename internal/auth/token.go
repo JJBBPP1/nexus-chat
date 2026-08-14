@@ -2,12 +2,13 @@ package auth
 
 import (
 	"errors"
+	"os"
 	"time"
 
 	"github.com/golang-jwt/jwt/v5"
 )
 
-var jwtSecret = []byte("clave-secreta-nexus-chat")
+var jwtSecret = []byte(os.Getenv("JWT_SECRET"))
 
 func GenerateToken(userID int64, username string) (string, error) {
 	claims := jwt.MapClaims{
